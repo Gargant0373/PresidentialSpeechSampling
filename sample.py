@@ -58,7 +58,7 @@ def main(chunk_size):
     for president, speeches in president_speech_map.items():
         for speech in speeches:
             text = speech["text"]
-            num_chunks = (int) (26 / len(speeches)) + 1
+            num_chunks = (int) (52 / len(speeches)) + 1
             chunks = split_into_chunks(text, num_chunks)
             
             for chunk in chunks:
