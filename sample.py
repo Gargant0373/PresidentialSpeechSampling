@@ -16,7 +16,7 @@ def split_into_chunks(text, num_chunks):
     return chunks[:num_chunks] 
 
 def get_first_n_sentences(text, chunk_size=200):
-    sentences = re.split(r'(?<=[.!?]) +', text)
+    sentences = re.split(r'(?<=[.!?])+', text)
     proper_sentence_text = ''
     current_word_count = 0
     
@@ -26,8 +26,9 @@ def get_first_n_sentences(text, chunk_size=200):
             proper_sentence_text += sentence + ' '
             current_word_count += sentence_word_count
         elif current_word_count == 0:
+            proper_sentence_text += sentence + ' '
             chunk_size += 10
-            continue
+            current_word_count += sentence_word_count
         
     return proper_sentence_text.strip().capitalize()
 
