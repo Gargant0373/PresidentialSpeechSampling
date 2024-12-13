@@ -7,7 +7,7 @@ import os
 file_path = "state_of_union_speeches.json"
 
 def get_exceptions():
-    return ["Zachary Taylor", "Franklin D. Roosevelt"]
+    return ["Zachary Taylor"]
 
 def split_into_chunks(text, num_chunks):
     words = text.split()
@@ -42,7 +42,9 @@ def main(chunk_size):
 
     president_speech_map = defaultdict(list)
 
-    for speech in data:
+    total_speeches = sum(len(speeches) for speeches in president_speech_map.values())
+    
+    for ix, speech in enumerate(data):
         if speech["president"] in get_exceptions():
             continue
         if int(speech["year"]) < 1900:
@@ -55,6 +57,10 @@ def main(chunk_size):
 
     samples = []
     total_word_count = 0
+    
+    for president, speeches in list(president_speech_map.items())[:5]:
+        if president == "Franklin Roosevelt":
+            president_speech_map["Franklin D. Roosevelt"] = president_speech_map.pop("Franklin Roosevelt")
     
     for president, speeches in president_speech_map.items():
         for speech in speeches:
@@ -86,6 +92,7 @@ def main(chunk_size):
     print(f"Mean words per sample: {mean_word_count:.2f}.")
     print(f"Minimum words per sample: {min([sample['word_count'] for sample in samples])}.")
     print(f"Maximum words per sample: {max([sample['word_count'] for sample in samples])}.")
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Process speeches and generate samples.")
